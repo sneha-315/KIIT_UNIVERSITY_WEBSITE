@@ -1,0 +1,3262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIIT University - Student Management System</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #B4F6A7;
+            color: #333333;
+            overflow-x: hidden;
+        }
+
+        /* Main Container */
+        .university-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Frame */
+        .header-frame {
+            background: #B4F6A7;
+            padding: 1.5rem 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .university-brand {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .logo-circle {
+            background: none;
+            border-radius: 0;
+            width: auto;
+            height: auto;
+        }
+
+        .university-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        .university-name {
+            text-align: left;
+            margin-left: 15px;
+        }
+
+        .university-name h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #057649;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .university-name p {
+            font-size: 0.9rem;
+            color: #666666;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .university-name .subtitle {
+            color: #057649;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Main Content Frame */
+        .main-frame {
+            display: flex;
+            flex: 1;
+            min-height: calc(100vh - 150px);
+        }
+
+        /* Sidebar */
+        .sidebar-frame {
+            background: #B4F6A7;
+            width: 280px;
+            padding: 2rem 0;
+            border-right: 1px solid #e0e0e0;
+            position: sticky;
+            top: 150px;
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+
+        .nav-title {
+            color: #4A1EF9;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 0 2rem 1rem 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 2rem;
+            color: #333333;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: #e8eaf6;
+            color: #1a237e;
+            border-left: 4px solid #3949ab;
+        }
+
+        .nav-link.active {
+            background: #B4F6A7;
+            color: #4A1EF9;
+            border-left: 4px solid #4A1EF9;
+            font-weight: 600;
+        }
+
+        .nav-link i {
+            color: #4A1EF9;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Content Area */
+        .content-frame {
+            flex: 1;
+            padding: 3rem;
+            overflow-y: auto;
+            background: #B4F6A7;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 3px solid #e8eaf6;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4A1EF9;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: #4A1EF9;
+            border-radius: 2px;
+        }
+
+        .page-subtitle {
+            color: #666666;
+            font-size: 1.2rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        /* Admin Login Page */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        .login-container {
+            max-width: 500px;
+            width: 100%;
+            padding: 3rem;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header h2 {
+            color: #4A1EF9;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #666666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555555;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4A1EF9;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(74, 30, 249, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #4A1EF9;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: #3a0ed9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(74, 30, 249, 0.3);
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #d4edda;
+            border-radius: 5px;
+            display: none;
+        }
+
+        /* Admin Dashboard */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e8eaf6;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* Student Form */
+        .student-form {
+            background: #f8f9fa;
+            padding: 2.5rem;
+            border-radius: 15px;
+            margin-bottom: 3rem;
+            border: 2px solid #e8eaf6;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Student Table */
+        .student-table-container {
+            overflow-x: auto;
+            margin-top: 2rem;
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            background: white;
+        }
+
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        .student-table th {
+            background: #4A1EF9;
+            color: white;
+            padding: 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.1rem;
+            position: sticky;
+            top: 0;
+        }
+
+        .student-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #e0e0e0;
+            color: #555555;
+        }
+
+        .student-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .student-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .content-card {
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-color: #4A1EF9;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4A1EF9, #4A1EF9);
+            border-radius: 15px 15px 0 0;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            border: 2px solid #e8eaf6;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: #e8eaf6;
+            border-color: #4A1EF9;
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #4A1EF9;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #4A1EF9;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4A1EF9;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4A1EF9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar-frame {
+                width: 250px;
+            }
+            
+            .content-frame {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-frame {
+                flex-direction: column;
+            }
+            
+            .sidebar-frame {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+            
+            .nav-menu {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            
+            .nav-item {
+                margin-bottom: 0;
+            }
+            
+            .nav-link {
+                padding: 1rem;
+                border-left: none;
+                border-bottom: 4px solid transparent;
+            }
+            
+            .nav-link.active,
+            .nav-link:hover {
+                border-left: none;
+                border-bottom: 4px solid #4A1EF9;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-frame {
+                padding: 1rem;
+            }
+            
+            .university-brand {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .university-name {
+                margin-left: 0;
+            }
+            
+            .university-name h1 {
+                font-size: 1.8rem;
+            }
+            
+            .content-frame {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .login-container {
+                padding: 2rem;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
+            
+            .admin-actions .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-card {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Search Results Styling */
+        .search-loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .student-details-card {
+            background: #ffffff;
+            border: 2px solid #4A1EF9;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(74, 30, 249, 0.1);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .student-details-card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .student-details-card table tr {
+            border-bottom: 1px solid #e8eaf6;
+        }
+
+        .student-details-card table tr:last-child {
+            border-bottom: none;
+        }
+
+        .student-details-card table td {
+            padding: 0.5rem 0;
+        }
+
+        .student-details-card table td:first-child {
+            font-weight: 600;
+            width: 40%;
+            color: #555;
+        }
+
+        /* Spinner animation */
+        .spinner-border {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 0.25em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+        }
+
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Tab Styles for Admin Dashboard */
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: #4A1EF9;
+            background: #f8f9fa;
+        }
+
+        .tab-btn.active {
+            color: #4A1EF9;
+            border-bottom: 3px solid #4A1EF9;
+            background: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="university-container">
+        <!-- Header -->
+        <div class="header-frame">
+            <div class="university-brand">
+                <div class="logo-container">
+                    <div class="logo-circle">
+                        <img src="images/KIIT_logo.png" alt="KIIT University Logo" class="university-logo">
+                    </div>
+                </div>
+
+                <div class="university-name">
+                    <h1>KIIT UNIVERSITY</h1>
+                    <p>Kalinga Institute of Industrial Technology</p>
+                    <p class="subtitle">Student Management System</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-frame">
+            <!-- Sidebar with Admin Link -->
+            <div class="sidebar-frame">
+                <h3 class="nav-title">Navigation</h3>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" onclick="showPage(event, 'home')">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'history')">
+                            <i class="fas fa-history"></i>
+                            <span>History</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'about')">
+                            <i class="fas fa-university"></i>
+                            <span>About University</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'programs')">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Programs</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'placement')">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Placement</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'fees')">
+                            <i class="fas fa-rupee-sign"></i>
+                            <span>Fee Structure</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'hostel')">
+                            <i class="fas fa-bed"></i>
+                            <span>Hostel</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'searchStudent')">
+                            <i class="fas fa-search"></i>
+                            <span>Search Student</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'contact')">
+                            <i class="fas fa-envelope"></i>
+                            <span>Contact</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="showPage(event, 'adminLogin')">
+                            <i class="fas fa-user-shield"></i>
+                            <span>Admin Login</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-frame">
+                <!-- Home Page -->
+                <div id="home" class="page active">
+                    <div class="page-header">
+                        <h1 class="page-title">Welcome to KIIT University</h1>
+                        <p class="page-subtitle">
+                            Ranked among the top 20 universities in India, KIIT stands as a beacon of excellence in higher education, innovation, and research. Established with a vision to transform lives through education.
+                        </p>
+                    </div>
+                    
+                    <div class="content-card" style="margin-bottom: 2rem;">
+                        <h3><i class="fas fa-star"></i> University at a Glance</h3>
+                        <p>KIIT University, established in 1992, has rapidly grown into one of India's most prestigious educational institutions. Spread over 400 acres in Bhubaneswar, Odisha, the university offers a perfect blend of academic excellence and vibrant campus life.</p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">400+</div>
+                                <div class="stat-label">Acres Campus</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">30+</div>
+                                <div class="stat-label">Countries Represented</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">₹2000+</div>
+                                <div class="stat-label">Cr Research Funding</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">Research Centers</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-grid">
+                        <div class="content-card">
+                            <div class="card-title">
+                                <h3><i class="fas fa-history"></i> Our Rich History</h3>
+                            </div>
+                            <div class="card-content">
+                                <p>From a humble vocational training center in 1992 to a Deemed University in 2004, KIIT's journey is a testament to visionary leadership and dedication to educational excellence.</p>
+                                <button class="btn" onclick="showPage(event, 'history')" style="margin-top: 1rem;">
+                                    <i class="fas fa-book-open"></i> Read Full History
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <div class="card-title">
+                                <h3><i class="fas fa-graduation-cap"></i> Diverse Programs</h3>
+                            </div>
+                            <div class="card-content">
+                                <p>KIIT offers comprehensive programs across multiple disciplines, catering to diverse educational aspirations.</p>
+                                <button class="btn" onclick="showPage(event, 'programs')" style="margin-top: 1rem;">
+                                    <i class="fas fa-list-alt"></i> Explore All Programs
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <div class="card-title">
+                                <h3><i class="fas fa-rupee-sign"></i> Transparent Fee Structure</h3>
+                            </div>
+                            <div class="card-content">
+                                <p>KIIT offers competitive fee structures with multiple payment options and scholarships.</p>
+                                <button class="btn" onclick="showPage(event, 'fees')" style="margin-top: 1rem;">
+                                    <i class="fas fa-file-invoice-dollar"></i> View Detailed Fees
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <div class="card-title">
+                                <h3><i class="fas fa-briefcase"></i> Outstanding Placements</h3>
+                            </div>
+                            <div class="card-content">
+                                <p>Consistent 95%+ placement rate with top national and international recruiters.</p>
+                                <button class="btn" onclick="showPage(event, 'placement')" style="margin-top: 1rem;">
+                                    <i class="fas fa-chart-line"></i> See Placement Records
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <div class="card-title">
+                                <h3><i class="fas fa-bed"></i> World-Class Hostel Facilities</h3>
+                            </div>
+                            <div class="card-content">
+                                <p>Secure, modern, and comfortable residential facilities for 15,000+ students.</p>
+                                <button class="btn" onclick="showPage(event, 'hostel')" style="margin-top: 1rem;">
+                                    <i class="fas fa-home"></i> Explore Hostel Life
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <div class="card-title">
+                                <h3><i class="fas fa-users"></i> Student Management System</h3>
+                            </div>
+                            <div class="card-content">
+                                <p>Access the comprehensive student management portal for administrative functions.</p>
+                                <button class="btn" onclick="showPage(event, 'adminLogin')" style="margin-top: 1rem;">
+                                    <i class="fas fa-sign-in-alt"></i> Admin Login Portal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Page -->
+                <div id="history" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Our Journey of Excellence</h1>
+                        <p class="page-subtitle">From humble beginnings to becoming an educational powerhouse</p>
+                    </div>
+                    
+                    <div class="content-card">
+                        <h3><i class="fas fa-road"></i> The KIIT Saga</h3>
+                        <div class="timeline" style="margin-top: 2rem; position: relative; padding-left: 2rem;">
+                            <div class="timeline-item" style="margin-bottom: 2rem; position: relative;">
+                                <div class="timeline-date" style="background: #4A1EF9; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: bold;">1992</div>
+                                <h4>The Genesis</h4>
+                                <p>KIIT began as an Industrial Training Institute with just 12 students and 2 teachers. The vision of Prof. Achyuta Samanta to provide quality education to underprivileged children laid the foundation for what would become one of India's premier universities.</p>
+                            </div>
+                            
+                            <div class="timeline-item" style="margin-bottom: 2rem; position: relative;">
+                                <div class="timeline-date" style="background: #4A1EF9; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: bold;">1997</div>
+                                <h4>Expansion to Engineering Education</h4>
+                                <p>Established as KIIT College of Engineering, offering B.Tech programs in Computer Science, Electronics, and Mechanical Engineering. The institute quickly gained recognition for its industry-oriented curriculum and excellent placement record.</p>
+                            </div>
+                            
+                            <div class="timeline-item" style="margin-bottom: 2rem; position: relative;">
+                                <div class="timeline-date" style="background: #4A1EF9; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: bold;">2004</div>
+                                <h4>Deemed University Status</h4>
+                                <p>Granted Deemed University status by the University Grants Commission (UGC), Ministry of HRD, Government of India. This marked a significant milestone, allowing KIIT to design its own curriculum and award degrees.</p>
+                            </div>
+                            
+                            <div class="timeline-item" style="margin-bottom: 2rem; position: relative;">
+                                <div class="timeline-date" style="background: #4A1EF9; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: bold;">2017</div>
+                                <h4>Category-I University Status</h4>
+                                <p>Awarded Category-I University status by UGC, recognizing KIIT's excellence in teaching, research, and infrastructure. The university expanded to include Medical, Dental, Law, and Management schools.</p>
+                            </div>
+                            
+                            <div class="timeline-item" style="margin-bottom: 2rem; position: relative;">
+                                <div class="timeline-date" style="background: #4A1EF9; color: white; padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: bold;">2023</div>
+                                <h4>Global Recognition</h4>
+                                <p>Achieved NAAC A++ grade (3.61/4.0) - the highest accreditation grade in India. Ranked among top 20 Indian universities and featured in QS World University Rankings.</p>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f0f7ff; padding: 2rem; border-radius: 10px; margin-top: 2rem;">
+                            <h4><i class="fas fa-bullseye" style="color: #4A1EF9;"></i> Vision & Mission</h4>
+                            <p><strong>Vision:</strong> "To become a global leader in education, research, and innovation, creating responsible citizens and future leaders."</p>
+                            <p><strong>Mission:</strong> "To provide world-class education, foster research and innovation, promote entrepreneurship, and contribute to societal development through sustainable practices."</p>
+                        </div>
+                    </div>
+                    
+                    <div class="content-card" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-chart-line"></i> Growth Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">30,000+</div>
+                                <div class="stat-label">Current Students</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100,000+</div>
+                                <div class="stat-label">Alumni Network</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">400+</div>
+                                <div class="stat-label">International Collaborations</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">₹500+ Cr</div>
+                                <div class="stat-label">Annual Turnover</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About University Page -->
+<div id="about" class="page">
+    <div class="page-header">
+        <h1 class="page-title">About KIIT University</h1>
+        <p class="page-subtitle">A center of excellence in education, research, innovation, and social transformation</p>
+    </div>
+    
+    <!-- University Overview Card -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-university" style="font-size: 2.5rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">University Overview</h3>
+        </div>
+        
+        <p style="font-size: 1.1rem; line-height: 1.8; color: #333; margin-bottom: 1.5rem;">
+            <span style="font-size: 2rem; color: #4A1EF9; font-weight: 700; float: left; margin-right: 0.5rem;"></span>
+            KIIT University, Bhubaneswar stands as a shining beacon of higher education in India, consistently ranked among the top 20 universities in the country. Spread across a sprawling <strong>400+ acre campus</strong>, the institution has transformed from a humble vocational training center in 1992 into a globally recognized multidisciplinary university that nurtures <strong>30,000+ students</strong> from <strong>65+ countries</strong>.
+        </p>
+        
+        <p style="font-size: 1.1rem; line-height: 1.8; color: #333;">
+            With its <strong>NAAC A++ grade (3.61/4.0)</strong> — the highest accreditation in India — and featured in <strong>QS World University Rankings</strong>, KIIT has established itself as a premier destination for students seeking world-class education, cutting-edge research opportunities, and holistic personality development. The university's vision, <em>"To become a global leader in education, research, and innovation, creating responsible citizens and future leaders,"</em> drives every aspect of its academic and administrative endeavors.
+        </p>
+    </div>
+    
+    <!-- Vision & Mission Card -->
+    <div class="content-grid" style="margin-bottom: 2rem;">
+        <div class="content-card">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-eye" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Our Vision</h3>
+            </div>
+            <p style="font-size: 1.1rem; line-height: 1.7; font-style: italic; color: #555;">
+                "To emerge as a world-class institution of higher learning, fostering academic excellence, innovation, and research, while nurturing ethical leaders who contribute meaningfully to society and address global challenges through sustainable solutions."
+            </p>
+        </div>
+        
+        <div class="content-card">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-bullseye" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Our Mission</h3>
+            </div>
+            <ul style="font-size: 1rem; line-height: 1.8; color: #555; padding-left: 1.2rem;">
+                <li style="margin-bottom: 0.5rem;"><strong>Academic Excellence:</strong> Deliver industry-relevant, research-integrated curricula through innovative teaching pedagogies</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Research & Innovation:</strong> Foster a culture of cutting-edge research, patents, and technology transfer</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Global Engagement:</strong> Strengthen international collaborations for student exchange, joint research, and cross-cultural learning</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Social Responsibility:</strong> Promote inclusive education, community development, and sustainable practices</li>
+                <li style="margin-bottom: 0.5rem;"><strong>Holistic Development:</strong> Nurture leadership, entrepreneurship, and ethical values among students</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Key Highlights in Stats -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-trophy" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9;">KIIT at a Glance</h3>
+        </div>
+        
+        <div class="stats-grid" style="margin-top: 1rem;">
+            <div class="stat-card">
+                <div class="stat-number">30,000+</div>
+                <div class="stat-label">Current Students</div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">From 65+ countries</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100,000+</div>
+                <div class="stat-label">Alumni Network</div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Spanning 50+ countries</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2,000+</div>
+                <div class="stat-label">Distinguished Faculty</div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">80%+ with Ph.D.</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">400+</div>
+                <div class="stat-label">International Collaborations</div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">With top global universities</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">₹500+ Cr</div>
+                <div class="stat-label">Annual Research Funding</div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">From government & industry</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Research Centers</div>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">Across 12 schools</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Campus Infrastructure -->
+    <div class="content-grid" style="margin-bottom: 2rem;">
+        <div class="content-card">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-map-marked-alt" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Campus Infrastructure</h3>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px;">
+                    <i class="fas fa-book-open" style="color: #4A1EF9; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                    <h4 style="margin: 0.5rem 0; font-size: 1.1rem;">Central Library</h4>
+                    <p style="color: #666; font-size: 0.9rem;">5,00,000+ books, 20,000+ e-journals</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px;">
+                    <i class="fas fa-flask" style="color: #4A1EF9; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                    <h4 style="margin: 0.5rem 0; font-size: 1.1rem;">Research Labs</h4>
+                    <p style="color: #666; font-size: 0.9rem;">200+ state-of-the-art laboratories</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px;">
+                    <i class="fas fa-wifi" style="color: #4A1EF9; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                    <h4 style="margin: 0.5rem 0; font-size: 1.1rem;">Digital Campus</h4>
+                    <p style="color: #666; font-size: 0.9rem;">100% Wi-Fi, smart classrooms</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px;">
+                    <i class="fas fa-hospital" style="color: #4A1EF9; font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                    <h4 style="margin: 0.5rem 0; font-size: 1.1rem;">Medical Center</h4>
+                    <p style="color: #666; font-size: 0.9rem;">24/7 emergency care, 100+ beds</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-card">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-medal" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Accreditations & Rankings</h3>
+            </div>
+            <ul style="font-size: 1rem; line-height: 2; color: #555; padding-left: 0.5rem;">
+                <li><i class="fas fa-star" style="color: #FFD700; margin-right: 0.5rem;"></i> <strong>NAAC A++ Grade</strong> (CGPA 3.61/4.00) - Highest Accreditation</li>
+                <li><i class="fas fa-star" style="color: #FFD700; margin-right: 0.5rem;"></i> <strong>NIRF 2023:</strong> Ranked 20th among Indian Universities</li>
+                <li><i class="fas fa-star" style="color: #FFD700; margin-right: 0.5rem;"></i> <strong>NIRF 2023:</strong> 25th in Engineering, 35th in Management</li>
+                <li><i class="fas fa-star" style="color: #FFD700; margin-right: 0.5rem;"></i> <strong>QS World University Rankings:</strong> 5-Star rating for Teaching & Employability</li>
+                <li><i class="fas fa-star" style="color: #FFD700; margin-right: 0.5rem;"></i> <strong>UGC:</strong> Category-I University Status</li>
+                <li><i class="fas fa-star" style="color: #FFD700; margin-right: 0.5rem;"></i> <strong>ABET:</strong> Accredited Engineering Programs</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- International Collaborations -->
+    <div class="content-card">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-globe-asia" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9;">Global Footprint</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+            <div>
+                <h4 style="color: #4A1EF9; margin-bottom: 1rem;">Partner Universities</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i> Harvard University, USA</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i> University of Cambridge, UK</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i> National University of Singapore</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i> University of Toronto, Canada</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i> University of Melbourne, Australia</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-check-circle" style="color: #28a745; margin-right: 0.5rem;"></i> Technical University of Munich, Germany</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #4A1EF9; margin-bottom: 1rem;">International Programs</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-exchange-alt" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Semester Exchange Programs</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-exchange-alt" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Dual Degree Programs (2+2, 3+1)</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-exchange-alt" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Summer/Winter Schools</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-exchange-alt" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Joint Research Projects</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-exchange-alt" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Faculty Exchange Programs</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-exchange-alt" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Global Internships</li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #4A1EF9; margin-bottom: 1rem;">International Students</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-users" style="color: #4A1EF9; margin-right: 0.5rem;"></i> <strong>2,500+</strong> International Students</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-flag" style="color: #4A1EF9; margin-right: 0.5rem;"></i> From <strong>65+</strong> Countries</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-hand-holding-heart" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Dedicated International Student Cell</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-language" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Language Support Services</li>
+                    <li style="margin-bottom: 0.7rem;"><i class="fas fa-hands-helping" style="color: #4A1EF9; margin-right: 0.5rem;"></i> Cultural Integration Programs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Legacy and Founding -->
+    <div style="margin-top: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 2.5rem; color: white;">
+        <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+            <div style="flex: 1;">
+                <i class="fas fa-quote-left" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1rem;">Founder's Vision</h3>
+                <p style="font-size: 1.2rem; line-height: 1.8; font-style: italic;">
+                    "KIIT was born out of a dream to provide quality education to every deserving student, regardless of their economic background. Today, as we stand among India's finest universities, our commitment remains the same — to transform lives through education and create responsible global citizens."
+                </p>
+                <p style="margin-top: 1.5rem; font-weight: 600;">— Prof. Achyuta Samanta, Founder, KIIT & KISS</p>
+            </div>
+            <div style="flex: 0 0 150px; text-align: center;">
+                <i class="fas fa-graduation-cap" style="font-size: 8rem; opacity: 0.2;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+                <!-- Programs Page -->
+<div id="programs" class="page">
+    <div class="page-header">
+        <h1 class="page-title">Academic Programs</h1>
+        <p class="page-subtitle">Comprehensive curriculum across 12 schools, 100+ programs, and infinite possibilities</p>
+    </div>
+    
+    <!-- Overview Stats -->
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <div class="stat-number">12</div>
+            <div class="stat-label">Schools of Study</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">100+</div>
+            <div class="stat-label">Academic Programs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Research Centers</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">2000+</div>
+            <div class="stat-label">Research Publications/Year</div>
+        </div>
+    </div>
+    
+    <!-- School of Engineering - Expanded -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-cogs" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">School of Engineering</h3>
+            <span style="background: #4A1EF9; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem;">NAAC A++ | NBA Accredited</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- B.Tech Programs -->
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-graduation-cap"></i> B.Tech Programs (4 Years)
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Computer Science & Engineering</strong> - AI, ML, Cybersecurity, Data Science
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Electronics & Communication Engineering</strong> - VLSI, Embedded Systems, IoT
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Mechanical Engineering</strong> - Robotics, Automotive, Thermal Engineering
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Civil Engineering</strong> - Structural, Environmental, Transportation
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Electrical Engineering</strong> - Power Systems, Control Systems, Renewable Energy
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Information Technology</strong> - Cloud Computing, Full Stack Development
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Biotechnology</strong> - Genetic Engineering, Bioinformatics
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Aerospace Engineering</strong> - Aerodynamics, Propulsion, Space Technology
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- M.Tech & Ph.D Programs -->
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-flask"></i> M.Tech Programs (2 Years)
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        Artificial Intelligence & Machine Learning
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        Data Science & Analytics
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        Cyber Security & Digital Forensics
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        VLSI & Embedded Systems
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        Robotics & Automation
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        Structural Engineering
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        Thermal & Fluid Engineering
+                    </li>
+                </ul>
+                
+                <h4 style="color: #4A1EF9; margin-top: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-microscope"></i> Doctoral Programs (Ph.D.)
+                </h4>
+                <p>Full-time and part-time research programs in all engineering disciplines with generous research fellowships up to ₹50,000/month.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Management - Expanded -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-chart-line" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">KIIT School of Management</h3>
+            <span style="background: #4A1EF9; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem;">AACSB Accredited | NIRF Rank 35</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <!-- MBA Programs -->
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-briefcase"></i> MBA Programs
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>MBA (General Management)</strong> - 2 Years, Full Time
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>MBA in International Business</strong> - 2 Years, Global Immersion
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Executive MBA</strong> - 15 Months, Weekend Program
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        <strong>Integrated BBA+MBA</strong> - 5 Years, Dual Degree
+                    </li>
+                </ul>
+                
+                <h4 style="color: #4A1EF9; margin-top: 1.5rem; margin-bottom: 1rem;">Specializations Offered</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Marketing</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Finance</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">HR Management</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Operations</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Business Analytics</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Digital Marketing</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Supply Chain</span>
+                    <span style="background: #e8eaf6; color: #4A1EF9; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem;">Entrepreneurship</span>
+                </div>
+            </div>
+            
+            <!-- BBA Programs -->
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-user-graduate"></i> BBA Programs (3 Years)
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        BBA (General)
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        BBA in Entrepreneurship
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        BBA in International Business
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        BBA in Digital Marketing
+                    </li>
+                </ul>
+                
+                <h4 style="color: #4A1EF9; margin-top: 1.5rem; margin-bottom: 1rem;">Industry Connect</h4>
+                <p>Live corporate projects, summer internships at Fortune 500 companies, and mentorship from industry leaders.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Law -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-balance-scale" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">KIIT School of Law</h3>
+            <span style="background: #4A1EF9; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem;">BCI Approved | Ranked 11th by NIRF</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-gavel"></i> Integrated Programs (5 Years)
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        BA LLB (Hons) - Arts & Law
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        BBA LLB (Hons) - Management & Law
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        B.Sc LLB (Hons) - Science & Law
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-scroll"></i> Postgraduate Programs
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        LLM (1 Year) - Corporate Law
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        LLM (1 Year) - Intellectual Property Rights
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        LLM (1 Year) - Criminal Law
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        LLM (1 Year) - Constitutional Law
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Medical Sciences -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-heartbeat" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">KIIT School of Medical Sciences</h3>
+            <span style="background: #4A1EF9; color: white; padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.9rem;">NMC Approved | 1500+ Bed Hospital</span>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-user-md"></i> Undergraduate Programs
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        MBBS (5.5 Years including internship)
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        BDS (5 Years)
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        B.Sc Nursing (4 Years)
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        B.Pharm (4 Years)
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-check-circle" style="color: #28a745; position: absolute; left: 0; top: 3px;"></i>
+                        B.Sc Medical Laboratory Technology
+                    </li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-stethoscope"></i> Postgraduate Programs
+                </h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        MD in General Medicine, Pediatrics, Radiology
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        MS in General Surgery, Orthopedics, ENT
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        MDS in Orthodontics, Oral Surgery
+                    </li>
+                    <li style="margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative;">
+                        <i class="fas fa-arrow-right" style="color: #4A1EF9; position: absolute; left: 0; top: 3px;"></i>
+                        M.Pharm in Pharmacology, Pharmaceutics
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Humanities & Social Sciences -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-book" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">Humanities & Social Sciences</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">Undergraduate Programs</h4>
+                <ul>
+                    <li>BA in Economics, Psychology, Sociology</li>
+                    <li>BA in English Literature & Journalism</li>
+                    <li>B.Sc in Psychology</li>
+                    <li>B.Voc in Digital Media</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: #4A1EF9; border-bottom: 2px solid #4A1EF9; padding-bottom: 0.5rem; margin-bottom: 1rem;">Postgraduate Programs</h4>
+                <ul>
+                    <li>MA in Economics, English, Sociology</li>
+                    <li>M.Sc in Clinical Psychology</li>
+                    <li>Master of Social Work (MSW)</li>
+                    <li>Ph.D. in Humanities</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Computer Applications -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-laptop-code" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">School of Computer Applications</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div>
+                <ul>
+                    <li><strong>BCA</strong> - 3 Years</li>
+                    <li><strong>MCA</strong> - 2 Years</li>
+                    <li><strong>M.Sc in Data Science</strong> - 2 Years</li>
+                    <li><strong>Ph.D. in Computer Applications</strong></li>
+                </ul>
+            </div>
+            <div>
+                <p style="background: #f8f9fa; padding: 1rem; border-radius: 10px;">
+                    <i class="fas fa-certificate" style="color: #4A1EF9;"></i> 
+                    <strong>Industry Certification:</strong> Google, AWS, Microsoft certifications integrated with curriculum.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Fashion Technology -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-tshirt" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">School of Fashion Technology</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div>
+                <ul>
+                    <li><strong>B.Des in Fashion Design</strong> - 4 Years</li>
+                    <li><strong>B.Des in Textile Design</strong> - 4 Years</li>
+                    <li><strong>M.Des in Fashion Management</strong> - 2 Years</li>
+                </ul>
+            </div>
+            <div>
+                <p><i class="fas fa-star" style="color: #FFD700;"></i> Collaborations with NIFT, Pearl Academy, and international fashion weeks.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- KIIT School of Film & Media Sciences -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-video" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">School of Film & Media Sciences</h3>
+        </div>
+        
+        <ul>
+            <li><strong>B.Sc in Animation & VFX</strong> - 3 Years</li>
+            <li><strong>B.Sc in Film Production</strong> - 3 Years</li>
+            <li><strong>MA in Journalism & Mass Communication</strong> - 2 Years</li>
+        </ul>
+    </div>
+    
+    <!-- KIIT School of Rural Management -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-leaf" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9; font-size: 1.8rem;">School of Rural Management</h3>
+        </div>
+        
+        <ul>
+            <li><strong>MBA in Rural Management</strong> - 2 Years</li>
+            <li><strong>PG Diploma in Development Studies</strong> - 1 Year</li>
+            <li><strong>Ph.D. in Rural Development</strong></li>
+        </ul>
+    </div>
+    
+    <!-- Admission Process Section -->
+    <div class="content-card" style="margin-top: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <h3 style="color: white; font-size: 1.8rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-clipboard-check"></i> Admission Process 2024-25
+        </h3>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+            <div>
+                <h4 style="color: white; border-bottom: 2px solid white; padding-bottom: 0.5rem;">Engineering</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">📌 KIITEE 2024</li>
+                    <li style="margin-bottom: 0.5rem;">📌 JEE Main Score Accepted</li>
+                    <li style="margin-bottom: 0.5rem;">📌 Minimum 60% in 10+2 (PCM)</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; border-bottom: 2px solid white; padding-bottom: 0.5rem;">Management</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">📌 CAT/XAT/MAT/CMAT</li>
+                    <li style="margin-bottom: 0.5rem;">📌 KIITEE Management</li>
+                    <li style="margin-bottom: 0.5rem;">📌 GD & PI</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; border-bottom: 2px solid white; padding-bottom: 0.5rem;">Medical</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">📌 NEET-UG/PG</li>
+                    <li style="margin-bottom: 0.5rem;">📌 17+ years age</li>
+                    <li style="margin-bottom: 0.5rem;">📌 Medical Fitness</li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; border-bottom: 2px solid white; padding-bottom: 0.5rem;">Law</h4>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;">📌 CLAT/LSAT</li>
+                    <li style="margin-bottom: 0.5rem;">📌 KIITEE Law</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn" style="background: white; color: #4A1EF9; font-weight: bold;">
+                <i class="fas fa-download"></i> Download Prospectus 2024-25
+            </button>
+            <button class="btn" style="background: transparent; color: white; border: 2px solid white; margin-left: 1rem;">
+                <i class="fas fa-edit"></i> Apply Now
+            </button>
+        </div>
+    </div>
+</div>
+                <!-- Placement Page -->
+                <div id="placement" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Placement & Career Services</h1>
+                        <p class="page-subtitle">95%+ placement rate with 800+ recruiters across the globe</p>
+                    </div>
+                    
+                    <!-- Placement Highlights -->
+                    <div class="content-card">
+                        <h3><i class="fas fa-chart-bar"></i> Placement Statistics 2023-24</h3>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">₹62 LPA</div>
+                                <div class="stat-label">Highest Package</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">₹8.5 LPA</div>
+                                <div class="stat-label">Average Package</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">800+</div>
+                                <div class="stat-label">Recruiting Companies</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">95.2%</div>
+                                <div class="stat-label">Placement Rate</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">International Offers</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">150+</div>
+                                <div class="stat-label">PPOs (Pre-Placement Offers)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Top Recruiters -->
+                    <div class="content-card" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-building"></i> Top Recruiters</h3>
+                        <div style="margin-top: 1.5rem;">
+                            <h4>Technology & IT</h4>
+                            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0;">
+                                <span style="background: #e3f2fd; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Microsoft</span>
+                                <span style="background: #e3f2fd; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Google</span>
+                                <span style="background: #e3f2fd; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Amazon</span>
+                                <span style="background: #e3f2fd; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Oracle</span>
+                                <span style="background: #e3f2fd; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Intel</span>
+                                <span style="background: #e3f2fd; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">IBM</span>
+                            </div>
+                            
+                            <h4>Consulting & Analytics</h4>
+                            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0;">
+                                <span style="background: #f3e5f5; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Deloitte</span>
+                                <span style="background: #f3e5f5; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">PwC</span>
+                                <span style="background: #f3e5f5; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">EY</span>
+                                <span style="background: #f3e5f5; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">KPMG</span>
+                                <span style="background: #f3e5f5; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">Accenture</span>
+                                <span style="background: #f3e5f5; padding: 0.5rem 1rem; border-radius: 5px; font-weight: 500;">McKinsey</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Placement Process -->
+                    <div class="content-grid" style="margin-top: 2rem;">
+                        <div class="content-card">
+                            <h3><i class="fas fa-calendar-alt"></i> Placement Calendar</h3>
+                            <ul>
+                                <li><strong>July-August:</strong> Internship recruitment for pre-final year</li>
+                                <li><strong>September:</strong> Pre-Placement Talks (PPTs)</li>
+                                <li><strong>October-December:</strong> Phase I placements (Dream & Super Dream)</li>
+                                <li><strong>January-March:</strong> Phase II placements (Core companies)</li>
+                                <li><strong>April-May:</strong> Phase III placements (Startups & SMEs)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h3><i class="fas fa-user-graduate"></i> Student Preparation</h3>
+                            <ul>
+                                <li>Technical Training (Coding, Aptitude, GD/PI)</li>
+                                <li>Industry-Academia Interface Programs</li>
+                                <li>Mock Interviews with HR professionals</li>
+                                <li>Resume Building Workshops</li>
+                                <li>Soft Skills & Personality Development</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Fee Structure Page -->
+                <div id="fees" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Fee Structure & Scholarships</h1>
+                        <p class="page-subtitle">Transparent pricing with multiple financial aid options</p>
+                    </div>
+                    
+                    <!-- Fee Tables -->
+                    <div class="content-card">
+                        <h3><i class="fas fa-money-check-alt"></i> Program-wise Fee Structure (2024-25)</h3>
+                        
+                        <div style="overflow-x: auto; margin-top: 1.5rem;">
+                            <table class="student-table">
+                                <thead>
+                                    <tr>
+                                        <th>Program</th>
+                                        <th>Duration</th>
+                                        <th>Annual Tuition Fee (₹)</th>
+                                        <th>Hostel Fee (₹)</th>
+                                        <th>Other Charges (₹)</th>
+                                        <th>Total Annual (₹)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>B.Tech (CSE/IT)</td>
+                                        <td>4 Years</td>
+                                        <td>4,50,000</td>
+                                        <td>1,20,000</td>
+                                        <td>80,000</td>
+                                        <td>6,50,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>B.Tech (Other Branches)</td>
+                                        <td>4 Years</td>
+                                        <td>3,80,000</td>
+                                        <td>1,20,000</td>
+                                        <td>80,000</td>
+                                        <td>5,80,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MBA</td>
+                                        <td>2 Years</td>
+                                        <td>6,00,000</td>
+                                        <td>1,20,000</td>
+                                        <td>60,000</td>
+                                        <td>7,80,000</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MBBS</td>
+                                        <td>5.5 Years</td>
+                                        <td>25,00,000</td>
+                                        <td>1,50,000</td>
+                                        <td>1,00,000</td>
+                                        <td>27,50,000</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Scholarship Section -->
+                    <div class="content-grid" style="margin-top: 2rem;">
+                        <div class="content-card">
+                            <h3><i class="fas fa-award"></i> Merit Scholarships</h3>
+                            <ul>
+                                <li><strong>KIIT Merit Scholarship:</strong> 100% tuition fee waiver for top 10 rankers in KIITEE</li>
+                                <li><strong>Academic Excellence Scholarship:</strong> 50% fee waiver for students with 95%+ in 12th</li>
+                                <li><strong>Sports Scholarship:</strong> Up to 100% fee waiver for national/international level athletes</li>
+                                <li><strong>Cultural Scholarship:</strong> For outstanding performers in arts, music, dance</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h3><i class="fas fa-hands-helping"></i> Need-Based Financial Aid</h3>
+                            <ul>
+                                <li><strong>KIIT Financial Assistance Program:</strong> For economically weaker sections</li>
+                                <li><strong>Single Girl Child Scholarship:</strong> 25% fee concession</li>
+                                <li><strong>Orphan Student Scholarship:</strong> 100% fee waiver</li>
+                                <li><strong>Differently-Abled Scholarship:</strong> 50% fee concession</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Hostel Page -->
+                <div id="hostel" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Hostel & Residential Facilities</h1>
+                        <p class="page-subtitle">Home away from home with world-class amenities</p>
+                    </div>
+                    
+                    <!-- Hostel Overview -->
+                    <div class="content-card">
+                        <h3><i class="fas fa-city"></i> Campus Residential Complex</h3>
+                        <p>KIIT offers one of the largest residential university campuses in India, with separate hostel facilities for boys and girls. The campus is designed as a self-contained township with all necessary amenities.</p>
+                        
+                        <div class="stats-grid" style="margin-top: 1.5rem;">
+                            <div class="stat-card">
+                                <div class="stat-number">25+</div>
+                                <div class="stat-label">Hostel Blocks</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">15,000+</div>
+                                <div class="stat-label">Residential Capacity</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Security & Support</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">Wi-Fi Coverage</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hostel Facilities -->
+                    <div class="content-grid" style="margin-top: 2rem;">
+                        <div class="content-card">
+                            <h3><i class="fas fa-bed"></i> Accommodation Types</h3>
+                            <div style="margin-top: 1rem;">
+                                <h4>Single Occupancy</h4>
+                                <ul>
+                                    <li>Room size: 120 sq.ft.</li>
+                                    <li>Attached bathroom</li>
+                                    <li>Study table, chair, wardrobe</li>
+                                    <li>Bookshelf and storage</li>
+                                </ul>
+                                
+                                <h4 style="margin-top: 1.5rem;">Double Occupancy</h4>
+                                <ul>
+                                    <li>Room size: 180 sq.ft.</li>
+                                    <li>Shared bathroom</li>
+                                    <li>Individual study spaces</li>
+                                    <li>Separate wardrobes</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card">
+                            <h3><i class="fas fa-utensils"></i> Dining Facilities</h3>
+                            <div style="margin-top: 1rem;">
+                                <h4>Centralized Mess</h4>
+                                <ul>
+                                    <li>Four-time meal service</li>
+                                    <li>Vegetarian & Non-vegetarian options</li>
+                                    <li>North Indian & South Indian cuisine</li>
+                                    <li>Special diet plans available</li>
+                                </ul>
+                                
+                                <h4 style="margin-top: 1.5rem;">Food Courts & Cafeterias</h4>
+                                <ul>
+                                    <li>10+ food courts across campus</li>
+                                    <li>Multi-cuisine options</li>
+                                    <li>Fast food counters</li>
+                                    <li>Juice bars & coffee shops</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Amenities & Services -->
+                    <div class="content-card" style="margin-top: 2rem;">
+                        <h3><i class="fas fa-concierge-bell"></i> Amenities & Services</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                            <div>
+                                <h4>Health & Wellness</h4>
+                                <ul>
+                                    <li>24/7 Medical Center</li>
+                                    <li>Ambulance service</li>
+                                    <li>Yoga & Meditation center</li>
+                                    <li>Gymnasium</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Recreational</h4>
+                                <ul>
+                                    <li>TV & Game rooms</li>
+                                    <li>Indoor sports facilities</li>
+                                    <li>Music room</li>
+                                    <li>Reading lounge</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4>Utilities</h4>
+                                <ul>
+                                    <li>High-speed Wi-Fi</li>
+                                    <li>Laundry service</li>
+                                    <li>Housekeeping daily</li>
+                                    <li>Power backup</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Student Registration Form Page (PUBLIC) -->
+                <div id="studentContact" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Student Registration Form</h1>
+                        <p class="page-subtitle">Fill in your details to register as a student at KIIT University</p>
+                    </div>
+                    
+                    <div class="student-form">
+                        <form id="publicStudentForm" method="POST" action="contact.php">
+                            <input type="hidden" id="publicStudentDbId" name="id">
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="public_student_id">Student ID *</label>
+                                    <input type="text" id="public_student_id" name="student_id" class="form-control" placeholder="Enter Student ID" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="public_full_name">Full Name *</label>
+                                    <input type="text" id="public_full_name" name="full_name" class="form-control" placeholder="Enter Full Name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="public_email">Email Address *</label>
+                                    <input type="email" id="public_email" name="email" class="form-control" placeholder="Enter Email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="public_phone_no">Phone Number *</label>
+                                    <input type="text" id="public_phone_no" name="phone_no" class="form-control" placeholder="Enter Phone Number" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="public_course">Course *</label>
+                                    <select id="public_course" name="course" class="form-control" required>
+                                        <option value="">Select Course</option>
+                                        <option value="B.Tech CSE">B.Tech Computer Science</option>
+                                        <option value="B.Tech ECE">B.Tech Electronics</option>
+                                        <option value="B.Tech ME">B.Tech Mechanical</option>
+                                        <option value="MBA">MBA</option>
+                                        <option value="BBA">BBA</option>
+                                        <option value="MCA">MCA</option>
+                                        <option value="M.Tech">M.Tech</option>
+                                        <option value="B.Sc">B.Sc</option>
+                                        <option value="M.Sc">M.Sc</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="public_year">Year *</label>
+                                    <select id="public_year" name="year" class="form-control" required>
+                                        <option value="">Select Year</option>
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3">3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="public_dob">Date of Birth</label>
+                                    <input type="date" id="public_dob" name="dob" class="form-control">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="public_gender">Gender</label>
+                                    <select id="public_gender" name="gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="public_hostel">Hostel Required?</label>
+                                    <select id="public_hostel" name="hostel" class="form-control">
+                                        <option value="">Select Option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="public_address">Address</label>
+                                    <textarea id="public_address" name="address" class="form-control" rows="3" placeholder="Enter your address"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div id="publicFormSuccess" class="success-message" style="display: none;">
+                                Student registered successfully!
+                            </div>
+                            
+                            <div id="publicFormError" class="error-message" style="display: none;">
+                                Error registering student. Please try again.
+                            </div>
+                            
+                            <button type="submit" class="btn">
+                                <i class="fas fa-user-plus"></i> Register Student
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="resetPublicStudentForm()" style="margin-left: 1rem;">
+                                <i class="fas fa-redo"></i> Reset Form
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Admin Login Page -->
+                <div id="adminLogin" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Admin Portal</h1>
+                        <p class="page-subtitle">Login to access the student management system</p>
+                    </div>
+                    
+                    <div class="login-page">
+                        <div class="login-container">
+                            <div class="login-header">
+                                <h2>Admin Login</h2>
+                                <p>Enter your credentials to access the management system</p>
+                            </div>
+                            
+                            <form id="loginForm">
+                                <div class="form-group">
+                                    <label for="username">Admin ID</label>
+                                    <input type="text" id="username" class="form-control" placeholder="Enter admin ID" required>
+                                    <div class="error-message" id="usernameError"></div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" class="form-control" placeholder="Enter password" required>
+                                    <div class="error-message" id="passwordError"></div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-block">
+                                    <i class="fas fa-sign-in-alt"></i> Login
+                                </button>
+                                
+                                <div class="error-message" id="loginError" style="text-align: center; margin-top: 1rem;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Public Search Student Page -->
+                <div id="searchStudent" class="page">
+                    <div class="page-header">
+                        <h1 class="page-title">Search Student</h1>
+                        <p class="page-subtitle">Enter Student ID to view student details (Public Access)</p>
+                    </div>
+                    
+                    <div class="content-card" style="margin-bottom: 2rem;">
+                        <h3><i class="fas fa-search"></i> Find Student Information</h3>
+                        <p>Enter Student ID to view student details. This feature is accessible to everyone.</p>
+                        
+                        <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                            <div style="flex: 1;">
+                                <input type="text" id="publicSearchStudentId" class="form-control" placeholder="Enter Student ID" style="width: 100%;">
+                            </div>
+                            <button class="btn" onclick="publicSearchStudent()">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                            <button class="btn btn-secondary" onclick="clearPublicSearch()">
+                                <i class="fas fa-times"></i> Clear
+                            </button>
+                        </div>
+                        
+                        <div id="publicSearchResult" style="margin-top: 1.5rem;"></div>
+                    </div>
+                </div>
+
+                <!-- Contact Page -->
+<div id="contact" class="page">
+    <div class="page-header">
+        <h1 class="page-title">Contact Us</h1>
+        <p class="page-subtitle">Get in touch with KIIT University. We're here to help and answer any questions.</p>
+    </div>
+    
+    <!-- Quick Contact Cards -->
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <i class="fas fa-phone-alt" style="font-size: 2.5rem; color: #4A1EF9; margin-bottom: 1rem;"></i>
+            <div class="stat-number" style="font-size: 1.5rem;">Helpline</div>
+            <div class="stat-label" style="font-size: 1.1rem; margin-top: 0.5rem;">1800-345-6789</div>
+            <p style="color: #666; margin-top: 0.5rem;">Toll Free (24x7)</p>
+        </div>
+        <div class="stat-card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <i class="fas fa-envelope" style="font-size: 2.5rem; color: #4A1EF9; margin-bottom: 1rem;"></i>
+            <div class="stat-number" style="font-size: 1.5rem;">Email</div>
+            <div class="stat-label" style="font-size: 1.1rem; margin-top: 0.5rem;">info@kiit.ac.in</div>
+            <p style="color: #666; margin-top: 0.5rem;">Response within 24hrs</p>
+        </div>
+        <div class="stat-card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <i class="fas fa-map-marker-alt" style="font-size: 2.5rem; color: #4A1EF9; margin-bottom: 1rem;"></i>
+            <div class="stat-number" style="font-size: 1.5rem;">Main Campus</div>
+            <div class="stat-label" style="font-size: 1.1rem; margin-top: 0.5rem;">Bhubaneswar</div>
+            <p style="color: #666; margin-top: 0.5rem;">Odisha, India - 751024</p>
+        </div>
+        <div class="stat-card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <i class="fas fa-clock" style="font-size: 2.5rem; color: #4A1EF9; margin-bottom: 1rem;"></i>
+            <div class="stat-number" style="font-size: 1.5rem;">Office Hours</div>
+            <div class="stat-label" style="font-size: 1.1rem; margin-top: 0.5rem;">Mon - Sat</div>
+            <p style="color: #666; margin-top: 0.5rem;">9:00 AM - 5:00 PM</p>
+        </div>
+    </div>
+    
+    <!-- Main Contact Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <!-- Campus Address Card -->
+        <div class="content-card" style="margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-university" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Campus Address</h3>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: #333; margin-bottom: 0.8rem;">Main Campus - Patia</h4>
+                <p style="line-height: 1.8; color: #555;">
+                    <i class="fas fa-map-pin" style="color: #4A1EF9; width: 25px;"></i> Campus-3, Patia, Bhubaneswar<br>
+                    <i class="fas fa-city" style="color: #4A1EF9; width: 25px;"></i> Khordha District<br>
+                    <i class="fas fa-globe" style="color: #4A1EF9; width: 25px;"></i> Odisha, India - 751024<br>
+                    <i class="fas fa-phone" style="color: #4A1EF9; width: 25px;"></i> +91-674-2725111<br>
+                    <i class="fas fa-fax" style="color: #4A1EF9; width: 25px;"></i> +91-674-2725112<br>
+                    <i class="fas fa-envelope" style="color: #4A1EF9; width: 25px;"></i> campus@kiit.ac.in
+                </p>
+            </div>
+            
+            <div>
+                <h4 style="color: #333; margin-bottom: 0.8rem;">Campus-2 & 3</h4>
+                <p style="line-height: 1.8; color: #555;">
+                    <i class="fas fa-map-pin" style="color: #4A1EF9; width: 25px;"></i> KIIT Road, Patia<br>
+                    <i class="fas fa-phone" style="color: #4A1EF9; width: 25px;"></i> +91-674-2725113<br>
+                    <i class="fas fa-envelope" style="color: #4A1EF9; width: 25px;"></i> admissions@kiit.ac.in
+                </p>
+            </div>
+            
+            <div style="margin-top: 1.5rem; background: #f8f9fa; padding: 1rem; border-radius: 10px;">
+                <i class="fas fa-subway" style="color: #4A1EF9;"></i> 
+                <strong>Nearest Railway Station:</strong> Bhubaneswar (6 km)<br>
+                <i class="fas fa-plane" style="color: #4A1EF9;"></i> 
+                <strong>Nearest Airport:</strong> Biju Patnaik International Airport (8 km)
+            </div>
+        </div>
+        
+        <!-- Department-wise Contacts -->
+        <div class="content-card" style="margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-users" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Department Contacts</h3>
+            </div>
+            
+            <div style="display: grid; gap: 1.2rem;">
+                <div style="display: flex; align-items: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-graduation-cap" style="color: #4A1EF9; font-size: 1.2rem; width: 35px;"></i>
+                    <div style="flex: 1;">
+                        <strong>Admissions Office</strong>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">admissions@kiit.ac.in | +91-674-2725115</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-briefcase" style="color: #4A1EF9; font-size: 1.2rem; width: 35px;"></i>
+                    <div style="flex: 1;">
+                        <strong>Placement Cell</strong>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">placement@kiit.ac.in | +91-674-2725116</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-id-card" style="color: #4A1EF9; font-size: 1.2rem; width: 35px;"></i>
+                    <div style="flex: 1;">
+                        <strong>Examination Cell</strong>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">exam@kiit.ac.in | +91-674-2725117</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-home" style="color: #4A1EF9; font-size: 1.2rem; width: 35px;"></i>
+                    <div style="flex: 1;">
+                        <strong>Hostel & Accommodation</strong>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">hostel@kiit.ac.in | +91-674-2725118</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-file-invoice-dollar" style="color: #4A1EF9; font-size: 1.2rem; width: 35px;"></i>
+                    <div style="flex: 1;">
+                        <strong>Accounts & Finance</strong>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">finance@kiit.ac.in | +91-674-2725119</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-globe-asia" style="color: #4A1EF9; font-size: 1.2rem; width: 35px;"></i>
+                    <div style="flex: 1;">
+                        <strong>International Relations</strong>
+                        <p style="margin: 0; color: #666; font-size: 0.9rem;">international@kiit.ac.in | +91-674-2725120</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- School-wise Contacts -->
+    <div class="content-card" style="margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-school" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9;">School-wise Contact Details</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <div style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4A1EF9;">
+                <h4 style="color: #4A1EF9; margin-bottom: 0.5rem;">
+                    <i class="fas fa-cogs"></i> School of Engineering
+                </h4>
+                <p style="margin: 0.3rem 0; color: #555;">Dr. P.K. Sahu - Dean</p>
+                <p style="margin: 0.3rem 0; color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-phone"></i> +91-674-2725130<br>
+                    <i class="fas fa-envelope"></i> engineering@kiit.ac.in
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4A1EF9;">
+                <h4 style="color: #4A1EF9; margin-bottom: 0.5rem;">
+                    <i class="fas fa-chart-line"></i> School of Management
+                </h4>
+                <p style="margin: 0.3rem 0; color: #555;">Prof. S.K. Mahapatra - Dean</p>
+                <p style="margin: 0.3rem 0; color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-phone"></i> +91-674-2725131<br>
+                    <i class="fas fa-envelope"></i> management@kiit.ac.in
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4A1EF9;">
+                <h4 style="color: #4A1EF9; margin-bottom: 0.5rem;">
+                    <i class="fas fa-balance-scale"></i> School of Law
+                </h4>
+                <p style="margin: 0.3rem 0; color: #555;">Prof. V.K. Shukla - Dean</p>
+                <p style="margin: 0.3rem 0; color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-phone"></i> +91-674-2725132<br>
+                    <i class="fas fa-envelope"></i> law@kiit.ac.in
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4A1EF9;">
+                <h4 style="color: #4A1EF9; margin-bottom: 0.5rem;">
+                    <i class="fas fa-heartbeat"></i> School of Medicine
+                </h4>
+                <p style="margin: 0.3rem 0; color: #555;">Dr. A.K. Mohanty - Dean</p>
+                <p style="margin: 0.3rem 0; color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-phone"></i> +91-674-2725133<br>
+                    <i class="fas fa-envelope"></i> medical@kiit.ac.in
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4A1EF9;">
+                <h4 style="color: #4A1EF9; margin-bottom: 0.5rem;">
+                    <i class="fas fa-laptop-code"></i> School of Computer Applications
+                </h4>
+                <p style="margin: 0.3rem 0; color: #555;">Dr. S. Mohapatra - Dean</p>
+                <p style="margin: 0.3rem 0; color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-phone"></i> +91-674-2725134<br>
+                    <i class="fas fa-envelope"></i> mca@kiit.ac.in
+                </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 1.2rem; border-radius: 10px; border-left: 4px solid #4A1EF9;">
+                <h4 style="color: #4A1EF9; margin-bottom: 0.5rem;">
+                    <i class="fas fa-book"></i> School of Humanities
+                </h4>
+                <p style="margin: 0.3rem 0; color: #555;">Prof. S. Rath - Dean</p>
+                <p style="margin: 0.3rem 0; color: #666; font-size: 0.95rem;">
+                    <i class="fas fa-phone"></i> +91-674-2725135<br>
+                    <i class="fas fa-envelope"></i> humanities@kiit.ac.in
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Important Helpline Numbers -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+        <div class="content-card" style="margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-phone-volume" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Important Helplines</h3>
+            </div>
+            
+            <div style="display: grid; gap: 1rem;">
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <span><i class="fas fa-shield-alt" style="color: #4A1EF9;"></i> Security Control Room</span>
+                    <span style="font-weight: 600;">+91-674-2725100</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <span><i class="fas fa-ambulance" style="color: #dc3545;"></i> Medical Emergency</span>
+                    <span style="font-weight: 600;">+91-674-2725101</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <span><i class="fas fa-fire-extinguisher" style="color: #ff6b6b;"></i> Fire & Safety</span>
+                    <span style="font-weight: 600;">+91-674-2725102</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <span><i class="fas fa-genderless" style="color: #fd7e14;"></i> Women's Helpline</span>
+                    <span style="font-weight: 600;">+91-674-2725103</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <span><i class="fas fa-tools" style="color: #6c757d;"></i> Maintenance & Repair</span>
+                    <span style="font-weight: 600;">+91-674-2725104</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 0.8rem; background: #f8f9fa; border-radius: 8px;">
+                    <span><i class="fas fa-bus" style="color: #007bff;"></i> Transport Services</span>
+                    <span style="font-weight: 600;">+91-674-2725105</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Media & Online Presence -->
+        <div class="content-card" style="margin-bottom: 0;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <i class="fas fa-hashtag" style="font-size: 2rem; color: #4A1EF9;"></i>
+                <h3 style="margin: 0; color: #4A1EF9;">Connect With Us</h3>
+            </div>
+            
+            <p style="color: #555; margin-bottom: 1.5rem;">Follow KIIT University on social media for latest updates, events, and announcements.</p>
+            
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem;">
+                <a href="#" style="background: #1877f2; color: white; padding: 0.8rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </a>
+                <a href="#" style="background: #1da1f2; color: white; padding: 0.8rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-twitter"></i> Twitter
+                </a>
+                <a href="#" style="background: #e4405f; color: white; padding: 0.8rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+                <a href="#" style="background: #0a66c2; color: white; padding: 0.8rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-linkedin-in"></i> LinkedIn
+                </a>
+                <a href="#" style="background: #ff0000; color: white; padding: 0.8rem 1.5rem; border-radius: 30px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fab fa-youtube"></i> YouTube
+                </a>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 10px; color: white;">
+                <h4 style="color: white; margin-bottom: 0.5rem;">
+                    <i class="fas fa-newspaper"></i> KIIT Newsletter
+                </h4>
+                <p style="margin-bottom: 1rem; opacity: 0.9;">Subscribe to receive updates on admissions, events, and campus news.</p>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="email" placeholder="Enter your email" style="flex: 1; padding: 0.8rem; border: none; border-radius: 5px; font-size: 0.95rem;">
+                    <button style="background: white; color: #4A1EF9; padding: 0.8rem 1.5rem; border: none; border-radius: 5px; font-weight: 600; cursor: pointer;">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map & Location -->
+    <div class="content-card">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-map-marked-alt" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9;">Campus Location</h3>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+                <h4 style="color: #333; margin-bottom: 1rem;">How to Reach KIIT</h4>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <i class="fas fa-plane" style="color: #4A1EF9; font-size: 1.5rem;"></i>
+                    <div>
+                        <strong>By Air:</strong>
+                        <p style="color: #666; margin: 0;">Biju Patnaik International Airport is 8 km from campus. Pre-paid taxis and app-based cabs are available 24/7.</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <i class="fas fa-train" style="color: #4A1EF9; font-size: 1.5rem;"></i>
+                    <div>
+                        <strong>By Train:</strong>
+                        <p style="color: #666; margin: 0;">Bhubaneswar Railway Station is 6 km away. Auto-rickshaws and cabs are readily available.</p>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <i class="fas fa-bus" style="color: #4A1EF9; font-size: 1.5rem;"></i>
+                    <div>
+                        <strong>By Road:</strong>
+                        <p style="color: #666; margin: 0;">Regular bus services from all major cities. KIIT is located on the main Bhubaneswar-Puri highway.</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1.5rem; padding: 1rem; background: #e3f2fd; border-radius: 8px;">
+                    <i class="fas fa-info-circle" style="color: #0d47a1;"></i>
+                    <strong style="color: #0d47a1;"> GPS Coordinates:</strong> 
+                    <span style="color: #333;">20.3514° N, 85.8175° E</span>
+                </div>
+            </div>
+            
+            <div style="background: #f8f9fa; border-radius: 10px; padding: 1rem; text-align: center;">
+                <div style="background: #e9ecef; height: 250px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6c757d;">
+                    <i class="fas fa-map" style="font-size: 4rem; margin-bottom: 1rem;"></i>
+                    <p style="font-size: 1.1rem;">Interactive Map</p>
+                    <p style="font-size: 0.9rem;">Campus-3, Patia, Bhubaneswar - 751024</p>
+                    <button style="margin-top: 1rem; background: #4A1EF9; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Inquiry Form -->
+    <div class="content-card" style="margin-top: 2rem; background: linear-gradient(135deg, #f5f7fa 0%, #f8f9fa 100%);">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <i class="fas fa-question-circle" style="font-size: 2rem; color: #4A1EF9;"></i>
+            <h3 style="margin: 0; color: #4A1EF9;">Quick Inquiry</h3>
+        </div>
+        
+        <p style="color: #555; margin-bottom: 1.5rem;">Have a question? Send us a message and we'll get back to you within 24 hours.</p>
+        
+        <form style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+            <div>
+                <input type="text" class="form-control" placeholder="Your Name *" required>
+            </div>
+            <div>
+                <input type="email" class="form-control" placeholder="Your Email *" required>
+            </div>
+            <div>
+                <input type="text" class="form-control" placeholder="Phone Number">
+            </div>
+            <div>
+                <select class="form-control">
+                    <option value="">Select Inquiry Type</option>
+                    <option>Admissions</option>
+                    <option>Courses & Programs</option>
+                    <option>Fees & Scholarships</option>
+                    <option>Hostel & Accommodation</option>
+                    <option>Placements</option>
+                    <option>Other</option>
+                </select>
+            </div>
+            <div style="grid-column: 1 / -1;">
+                <textarea class="form-control" rows="4" placeholder="Your Message *" required></textarea>
+            </div>
+            <div style="grid-column: 1 / -1; text-align: center;">
+                <button type="submit" class="btn" style="background: #4A1EF9; color: white; padding: 0.8rem 3rem;">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+            </div>
+        </form>
+        
+        <p style="text-align: center; margin-top: 1rem; color: #6c757d; font-size: 0.9rem;">
+            <i class="fas fa-shield-alt"></i> Your information is secure and will not be shared with third parties.
+        </p>
+    </div>
+    
+    <!-- Additional Contact Information -->
+    <div style="margin-top: 2rem; text-align: center; color: #666; padding: 1.5rem; border-top: 1px solid #dee2e6;">
+        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+            <span><i class="fas fa-phone"></i> Toll Free: 1800-345-6789</span>
+            <span><i class="fas fa-envelope"></i> support@kiit.ac.in</span>
+            <span><i class="fas fa-comment"></i> Chat with us: Live Chat (9 AM - 5 PM)</span>
+            <span><i class="fas fa-fax"></i> Fax: +91-674-2725112</span>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">
+            <i class="fas fa-clock"></i> Our support team is available Monday to Saturday, 9:00 AM to 5:00 PM (IST)
+        </p>
+    </div>
+</div>
+
+                <!-- Admin Dashboard Page -->
+                <div id="adminDashboard" class="page">
+                    <div class="admin-header">
+                        <div>
+                            <h1 class="page-title">Student Management Dashboard</h1>
+                            <p class="page-subtitle">Manage student records - Add, Edit, Delete, and View students</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-secondary" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tabs for Admin Dashboard -->
+                    <div style="margin-bottom: 2rem;">
+                        <div style="display: flex; border-bottom: 2px solid #e0e0e0;">
+                            <button id="tabStudentForm" class="tab-btn active" onclick="showAdminTab('studentForm')">
+                                <i class="fas fa-user-plus"></i> Add/Edit Student
+                            </button>
+                            <button id="tabStudentList" class="tab-btn" onclick="showAdminTab('studentList')">
+                                <i class="fas fa-list"></i> All Students
+                            </button>
+                            <button id="tabSearch" class="tab-btn" onclick="showAdminTab('search')">
+                                <i class="fas fa-search"></i> Quick Search
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Form Tab Content -->
+                    <div id="tabContentStudentForm" class="tab-content active">
+                        <div class="student-form">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <h3 style="color: #4A1EF9; margin: 0;">
+                                    <i class="fas fa-user-plus"></i> Student Registration/Edit Form
+                                </h3>
+                                <button class="btn" onclick="showAdminTab('studentList')">
+                                    <i class="fas fa-list"></i> View All Students
+                                </button>
+                            </div>
+                            
+                            <form id="adminStudentForm">
+                                <input type="hidden" id="adminStudentDbId" name="id">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="admin_student_id">Student ID *</label>
+                                        <input type="text" id="admin_student_id" name="student_id" class="form-control" placeholder="Enter Student ID" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="admin_full_name">Full Name *</label>
+                                        <input type="text" id="admin_full_name" name="full_name" class="form-control" placeholder="Enter Full Name" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="admin_email">Email Address *</label>
+                                        <input type="email" id="admin_email" name="email" class="form-control" placeholder="Enter Email" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="admin_phone_no">Phone Number *</label>
+                                        <input type="text" id="admin_phone_no" name="phone_no" class="form-control" placeholder="Enter Phone Number" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="admin_course">Course *</label>
+                                        <select id="admin_course" name="course" class="form-control" required>
+                                            <option value="">Select Course</option>
+                                            <option value="B.Tech CSE">B.Tech Computer Science</option>
+                                            <option value="B.Tech ECE">B.Tech Electronics</option>
+                                            <option value="B.Tech ME">B.Tech Mechanical</option>
+                                            <option value="MBA">MBA</option>
+                                            <option value="BBA">BBA</option>
+                                            <option value="MCA">MCA</option>
+                                            <option value="M.Tech">M.Tech</option>
+                                            <option value="B.Sc">B.Sc</option>
+                                            <option value="M.Sc">M.Sc</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="admin_year">Year *</label>
+                                        <select id="admin_year" name="year" class="form-control" required>
+                                            <option value="">Select Year</option>
+                                            <option value="1">1st Year</option>
+                                            <option value="2">2nd Year</option>
+                                            <option value="3">3rd Year</option>
+                                            <option value="4">4th Year</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="admin_dob">Date of Birth</label>
+                                        <input type="date" id="admin_dob" name="dob" class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="admin_gender">Gender</label>
+                                        <select id="admin_gender" name="gender" class="form-control">
+                                            <option value="">Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="admin_hostel">Hostel Required?</label>
+                                        <select id="admin_hostel" name="hostel" class="form-control">
+                                            <option value="">Select Option</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="admin_address">Address</label>
+                                        <textarea id="admin_address" name="address" class="form-control" rows="3" placeholder="Enter your address"></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div id="adminFormSuccess" class="success-message" style="display: none;">
+                                    Student saved successfully!
+                                </div>
+                                
+                                <div id="adminFormError" class="error-message" style="display: none;">
+                                    Error saving student. Please try again.
+                                </div>
+                                
+                                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save"></i> Save Student
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" onclick="resetAdminStudentForm()">
+                                        <i class="fas fa-redo"></i> Clear Form
+                                    </button>
+                                    <button type="button" class="btn" onclick="showAdminTab('studentList')">
+                                        <i class="fas fa-list"></i> View All Students
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Student List Tab Content -->
+                    <div id="tabContentStudentList" class="tab-content">
+                        <div class="admin-actions">
+                            <button class="btn btn-success" onclick="showAdminTab('studentForm'); resetAdminStudentForm();">
+                                <i class="fas fa-plus"></i> Add New Student
+                            </button>
+                            <button class="btn" onclick="loadStudents()">
+                                <i class="fas fa-sync-alt"></i> Refresh List
+                            </button>
+                            <button class="btn" onclick="showAdminTab('search')">
+                                <i class="fas fa-search"></i> Search Student
+                            </button>
+                        </div>
+                        
+                        <div class="student-table-container" style="margin-top: 1.5rem;">
+                            <div style="padding: 1.5rem; background: #f8f9fa; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+                                <h3 style="margin: 0; color: #4A1EF9;">
+                                    <i class="fas fa-database"></i> All Students Database
+                                </h3>
+                                <span style="color: #666; font-weight: 500;">
+                                    Total Students: <span id="studentCount">0</span>
+                                </span>
+                            </div>
+                            <table class="student-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Course</th>
+                                        <th>Year</th>
+                                        <th>DOB</th>
+                                        <th>Gender</th>
+                                        <th>Hostel</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Tab Content -->
+                    <div id="tabContentSearch" class="tab-content">
+                        <div class="content-card" style="margin-bottom: 2rem;">
+                            <h3><i class="fas fa-search"></i> Quick Search & Edit</h3>
+                            <p>Search student by ID to view or edit details</p>
+                            
+                            <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem;">
+                                <div style="flex: 1;">
+                                    <input type="text" id="adminSearchStudentId" class="form-control" placeholder="Enter Student ID" style="width: 100%;">
+                                </div>
+                                <button class="btn" onclick="searchStudentForEdit()">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                                <button class="btn btn-secondary" onclick="clearAdminSearch()">
+                                    <i class="fas fa-times"></i> Clear
+                                </button>
+                            </div>
+                            
+                            <div id="adminSearchResult" style="margin-top: 1.5rem;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    // ================= GLOBAL STATE =================
+let isLoggedIn = false;
+
+// ================= PAGE NAVIGATION =================
+function showPage(e, pageId) {
+    if (e) e.preventDefault();
+    
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    
+    // Show selected page
+    const page = document.getElementById(pageId);
+    if (page) page.classList.add('active');
+    
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    const activeLink = document.querySelector(`.nav-link[onclick*="${pageId}"]`);
+    if (activeLink) activeLink.classList.add('active');
+    
+    // Special handling for dashboard
+    if (pageId === 'adminDashboard' && isLoggedIn) {
+        showAdminTab('studentForm');
+        loadStudents();
+    }
+}
+
+// ================= ADMIN LOGIN =================
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    // Demo credentials
+    if (username === 'admin' && password === 'admin123') {
+        isLoggedIn = true;
+        document.getElementById('loginError').style.display = 'none';
+        showPage(e, 'adminDashboard');
+        showMessage('Login successful! Welcome Admin.', 'success');
+        this.reset();
+    } else {
+        document.getElementById('loginError').textContent = 'Invalid credentials. Use admin/admin123';
+        document.getElementById('loginError').style.display = 'block';
+    }
+});
+
+// ================= MESSAGE DISPLAY =================
+function showMessage(text, type = 'success') {
+    const existing = document.querySelector('.message-box');
+    if (existing) existing.remove();
+    
+    const message = document.createElement('div');
+    message.className = 'message-box';
+    message.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        padding: 12px 20px;
+        background: ${type === 'success' ? '#4CAF50' : '#f44336'};
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999;
+        animation: fadeIn 0.3s;
+    `;
+    message.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${text}`;
+    document.body.appendChild(message);
+    
+    setTimeout(() => message.remove(), 3000);
+}
+
+// ================= ADMIN TABS =================
+function showAdminTab(tabName) {
+    // Update active tab button
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    
+    const tabButton = document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+    if (tabButton) tabButton.classList.add('active');
+    
+    // Hide all tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+        content.style.display = 'none';
+    });
+    
+    // Show selected tab content
+    const activeContent = document.getElementById('tabContent' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+    if (activeContent) {
+        activeContent.classList.add('active');
+        activeContent.style.display = 'block';
+    }
+    
+    // Load students if on studentList tab
+    if (tabName === 'studentList') {
+        loadStudents();
+    }
+}
+
+// ================= LOAD STUDENTS =================
+function loadStudents() {
+    if (!isLoggedIn) return;
+    
+    fetch('display.php')
+        .then(response => response.json())
+        .then(students => {
+            const tbody = document.getElementById('studentTableBody');
+            const countSpan = document.getElementById('studentCount');
+            
+            if (!tbody || !countSpan) return;
+            
+            tbody.innerHTML = '';
+            countSpan.textContent = students.length || 0;
+            
+            students.forEach(student => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${student.student_id || ''}</td>
+                    <td>${student.full_name || ''}</td>
+                    <td>${student.email || ''}</td>
+                    <td>${student.phone_no || ''}</td>
+                    <td>${student.course || ''}</td>
+                    <td>${student.year || ''}</td>
+                    <td>${student.dob || ''}</td>
+                    <td>${student.gender || ''}</td>
+                    <td>${student.hostel || ''}</td>
+                    <td>
+                        <button class="btn btn-sm" onclick="editStudent('${student.student_id}')" style="background:#4A1EF9;color:white;margin:2px;">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-sm" onclick="deleteStudent('${student.student_id}')" style="background:#dc3545;color:white;margin:2px;">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+            });
+        })
+        .catch(error => {
+            console.error('Error loading students:', error);
+            showMessage('Error loading students: ' + error.message, 'error');
+        });
+}
+
+// ================= EDIT STUDENT =================
+function editStudent(studentId) {
+    if (!studentId) return;
+    
+    // Set search field value
+    document.getElementById('adminSearchStudentId').value = studentId;
+    
+    // Switch to search tab and perform search
+    showAdminTab('search');
+    searchStudentForEdit();
+}
+
+// ================= SEARCH STUDENT FOR EDIT =================
+function searchStudentForEdit() {
+    const studentId = document.getElementById('adminSearchStudentId').value.trim();
+    const resultBox = document.getElementById('adminSearchResult');
+    
+    if (!studentId) {
+        resultBox.innerHTML = '<p style="color: red;">Please enter a Student ID</p>';
+        return;
+    }
+    
+    resultBox.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Searching...</p>';
+    
+    const formData = new FormData();
+    formData.append('student_id', studentId);
+    
+    fetch('search.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            resultBox.innerHTML = `<p style="color: red;">${data.error}</p>`;
+            return;
+        }
+        
+        // CRITICAL: Set the hidden ID field to ANY value to trigger edit mode
+        // This tells the form submission that we are editing, not adding
+        document.getElementById('adminStudentDbId').value = data.student_id;
+        
+        // Populate all form fields with the retrieved data
+        document.getElementById('admin_student_id').value = data.student_id || '';
+        document.getElementById('admin_full_name').value = data.full_name || '';
+        document.getElementById('admin_email').value = data.email || '';
+        document.getElementById('admin_phone_no').value = data.phone_no || '';
+        document.getElementById('admin_course').value = data.course || '';
+        document.getElementById('admin_year').value = data.year || '';
+        document.getElementById('admin_dob').value = data.dob || '';
+        document.getElementById('admin_gender').value = data.gender || '';
+        document.getElementById('admin_hostel').value = data.hostel || '';
+        document.getElementById('admin_address').value = data.address || '';
+        
+        // Make student_id read-only during edit
+        document.getElementById('admin_student_id').readOnly = true;
+        
+        resultBox.innerHTML = `
+            <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 5px;">
+                <p><i class="fas fa-check-circle"></i> <strong>Student found!</strong> You can now edit the details below.</p>
+                <p style="margin-top: 5px; font-size: 0.9rem;">Editing Student ID: <strong>${data.student_id}</strong></p>
+            </div>
+        `;
+        
+        // Switch to student form tab for editing
+        showAdminTab('studentForm');
+    })
+    .catch(error => {
+        resultBox.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        showMessage('Search failed: ' + error.message, 'error');
+    });
+}
+
+// ================= ADMIN STUDENT FORM SUBMISSION =================
+document.getElementById('adminStudentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    const formData = new FormData(this);
+    
+    // CRITICAL: Check if we are in edit mode by checking if hidden ID field has value
+    const isEdit = document.getElementById('adminStudentDbId').value !== '';
+    const url = isEdit ? 'update.php' : 'contact.php';
+    
+    console.log('Mode:', isEdit ? 'EDITING' : 'ADDING NEW');
+    console.log('URL:', url);
+    console.log('Student ID:', formData.get('student_id'));
+    
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log('Server response:', result);
+        
+        if (result.trim() === 'success') {
+            showMessage(isEdit ? 'Student updated successfully!' : 'Student added successfully!', 'success');
+            
+            // Reset form for next operation
+            resetAdminStudentForm();
+            
+            // Reload student list
+            loadStudents();
+            
+            // Switch to student list tab to show updated data
+            showAdminTab('studentList');
+        } else {
+            showMessage('Error: ' + result, 'error');
+        }
+    })
+    .catch(error => {
+        showMessage('Network error: ' + error.message, 'error');
+        console.error('Fetch error:', error);
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+});
+
+// ================= DELETE STUDENT =================
+function deleteStudent(studentId) {
+    if (!confirm(`Are you sure you want to delete student ${studentId}?`)) return;
+    
+    const formData = new FormData();
+    formData.append('student_id', studentId);
+    
+    fetch('delete.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        if (result.trim() === 'success') {
+            showMessage('Student deleted successfully!', 'success');
+            loadStudents();
+        } else {
+            showMessage('Error: ' + result, 'error');
+        }
+    })
+    .catch(error => {
+        showMessage('Network error: ' + error.message, 'error');
+    });
+}
+
+// ================= RESET ADMIN FORM =================
+function resetAdminStudentForm() {
+    const form = document.getElementById('adminStudentForm');
+    if (form) {
+        form.reset();
+        
+        // CRITICAL: Clear the hidden ID field to switch back to ADD mode
+        document.getElementById('adminStudentDbId').value = '';
+        
+        // Make student_id editable again for new entries
+        document.getElementById('admin_student_id').readOnly = false;
+        
+        // Clear any success/error messages
+        const successMsg = document.getElementById('adminFormSuccess');
+        const errorMsg = document.getElementById('adminFormError');
+        if (successMsg) successMsg.style.display = 'none';
+        if (errorMsg) errorMsg.style.display = 'none';
+    }
+}
+
+// ================= CLEAR SEARCH FUNCTIONS =================
+function clearPublicSearch() {
+    document.getElementById('publicSearchStudentId').value = '';
+    document.getElementById('publicSearchResult').innerHTML = '';
+}
+
+function clearAdminSearch() {
+    document.getElementById('adminSearchStudentId').value = '';
+    document.getElementById('adminSearchResult').innerHTML = '';
+    resetAdminStudentForm();
+}
+
+// ================= PUBLIC SEARCH STUDENT =================
+function publicSearchStudent() {
+    const studentId = document.getElementById('publicSearchStudentId').value.trim();
+    const resultBox = document.getElementById('publicSearchResult');
+    
+    if (!studentId) {
+        resultBox.innerHTML = '<p style="color: red;">Please enter a Student ID</p>';
+        return;
+    }
+    
+    resultBox.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Searching...</p>';
+    
+    const formData = new FormData();
+    formData.append('student_id', studentId);
+    
+    fetch('search.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            resultBox.innerHTML = `<p style="color: red;">${data.error}</p>`;
+            return;
+        }
+        
+        resultBox.innerHTML = `
+            <div class="student-details-card">
+                <h4 style="color: #4A1EF9; margin-bottom: 15px;">
+                    <i class="fas fa-user-graduate"></i> Student Details
+                </h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td style="padding: 8px; font-weight: 600; width: 40%;">Student ID:</td>
+                        <td style="padding: 8px;">${data.student_id || ''}</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 8px; font-weight: 600;">Full Name:</td>
+                        <td style="padding: 8px;">${data.full_name || ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-weight: 600;">Email:</td>
+                        <td style="padding: 8px;">${data.email || ''}</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 8px; font-weight: 600;">Phone:</td>
+                        <td style="padding: 8px;">${data.phone_no || ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-weight: 600;">Course:</td>
+                        <td style="padding: 8px;">${data.course || ''}</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 8px; font-weight: 600;">Year:</td>
+                        <td style="padding: 8px;">${data.year || ''}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-weight: 600;">Date of Birth:</td>
+                        <td style="padding: 8px;">${data.dob || 'N/A'}</td>
+                    </tr>
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 8px; font-weight: 600;">Gender:</td>
+                        <td style="padding: 8px;">${data.gender || 'N/A'}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; font-weight: 600;">Hostel Required:</td>
+                        <td style="padding: 8px;">${data.hostel || 'N/A'}</td>
+                    </tr>
+                    ${data.address ? `
+                    <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 8px; font-weight: 600;">Address:</td>
+                        <td style="padding: 8px;">${data.address}</td>
+                    </tr>
+                    ` : ''}
+                </table>
+            </div>
+        `;
+    })
+    .catch(error => {
+        resultBox.innerHTML = `<p style="color: red;">Error searching: ${error.message}</p>`;
+    });
+}
+
+// ================= PUBLIC FORM SUBMISSION =================
+document.getElementById('publicStudentForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    
+    const formData = new FormData(this);
+    
+    fetch('contact.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        if (result.trim() === 'success') {
+            document.getElementById('publicFormSuccess').style.display = 'block';
+            document.getElementById('publicFormError').style.display = 'none';
+            this.reset();
+            showMessage('Student registered successfully!', 'success');
+        } else {
+            document.getElementById('publicFormError').style.display = 'block';
+            document.getElementById('publicFormSuccess').style.display = 'none';
+            document.getElementById('publicFormError').innerHTML = 'Error: ' + result;
+        }
+    })
+    .catch(error => {
+        document.getElementById('publicFormError').style.display = 'block';
+        document.getElementById('publicFormSuccess').style.display = 'none';
+        document.getElementById('publicFormError').innerHTML = 'Network error: ' + error.message;
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+    });
+});
+
+// ================= RESET PUBLIC FORM =================
+function resetPublicStudentForm() {
+    const form = document.getElementById('publicStudentForm');
+    if (form) {
+        form.reset();
+        document.getElementById('publicStudentDbId').value = '';
+        document.getElementById('public_student_id').readOnly = false;
+        document.getElementById('publicFormSuccess').style.display = 'none';
+        document.getElementById('publicFormError').style.display = 'none';
+    }
+}
+
+// ================= LOGOUT =================
+function logout() {
+    isLoggedIn = false;
+    resetAdminStudentForm();
+    showMessage('Logged out successfully', 'success');
+    showPage(new Event('click'), 'home');
+}
+
+// ================= INITIALIZE =================
+document.addEventListener('DOMContentLoaded', function() {
+    // Show home page by default
+    showPage(new Event('click'), 'home');
+    
+    // Add any additional initialization here
+    console.log('Student Management System initialized');
+});
+</script>
+</body>
+</html>
